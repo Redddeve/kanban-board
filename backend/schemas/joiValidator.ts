@@ -13,6 +13,11 @@ export const addCardSchema = Joi.object({
   sectionId: Joi.string().required(),
 });
 
+export const updateCardSchema = Joi.object({
+  title: Joi.string().required(),
+  content: Joi.string().required(),
+});
+
 export const updatePosSchema = Joi.object({
   boardId: Joi.string().required(),
   sourceColId: Joi.string().required(),
