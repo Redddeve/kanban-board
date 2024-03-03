@@ -3,10 +3,18 @@ import { Board } from '../../models/kanban';
 import requestError from '../../utils/requestError';
 import ctrlWrapper from '../../utils/ctrlWrapper';
 
-const getBoardById = async (req: Request, res: Response) => {
+const updateBoardName = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const { name } = req.body;
+
   try {
-    const result = await Board.findById(id);
+    const result = await Board.findByIdAndUpdate(
+      id,
+      { name },
+      {
+        new: true,
+      },
+    );
 
     if (!result) {
       return requestError(404, 'Not found');
@@ -18,4 +26,4 @@ const getBoardById = async (req: Request, res: Response) => {
   }
 };
 
-export default ctrlWrapper(getBoardById);
+export default ctrlWrapper(updateBoardName);

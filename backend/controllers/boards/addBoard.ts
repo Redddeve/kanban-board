@@ -6,28 +6,34 @@ import ctrlWrapper from '../../utils/ctrlWrapper';
 const addBoard = async (req: Request, res: Response) => {
   const { name } = req.body;
 
-  const newBoard = new Board({
-    name,
-    todo: {
-      title: 'To Do',
-      cards: [],
-      id: uuidv4(),
-    },
-    inProgress: {
-      title: 'In Progress',
-      cards: [],
-      id: uuidv4(),
-    },
-    done: {
-      title: 'Done',
-      cards: [],
-      id: uuidv4(),
-    },
-  });
+  try {
+    const newBoard = new Board({
+      name,
+      sections: {
+        todo: {
+          title: 'To Do',
+          cards: [],
+          id: uuidv4(),
+        },
+        inProgress: {
+          title: 'In Progress',
+          cards: [],
+          id: uuidv4(),
+        },
+        done: {
+          title: 'Done',
+          cards: [],
+          id: uuidv4(),
+        },
+      },
+    });
 
-  const result = await Board.create(newBoard);
+    const result = await Board.create(newBoard);
 
-  res.status(201).json(result);
+    res.status(201).json(result);
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
 };
 
 export default ctrlWrapper(addBoard);

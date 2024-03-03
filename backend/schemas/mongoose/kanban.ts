@@ -4,20 +4,26 @@ export const schemaOptions = { versionKey: false, timestamps: true };
 
 export const cardSchema = new Schema(
   {
-    title: {
+    board: {
+      type: Schema.Types.ObjectId,
+      ref: 'Board',
+      required: true,
+    },
+    section: {
       type: String,
       required: true,
+    },
+    title: {
+      type: String,
+      default: 'Task',
     },
     content: {
       type: String,
-      required: true,
+      default: 'Description',
     },
-    status: {
-      type: String,
-      enum: ['todo', 'inProgress', 'done'],
-      required: true,
+    position: {
+      type: Number,
     },
-    index: Number,
   },
   schemaOptions,
 );
@@ -28,20 +34,22 @@ export const boardSchema = new Schema(
       type: String,
       required: true,
     },
-    todo: {
-      id: { type: String, required: true },
-      cards: [cardSchema],
-      title: { type: String, required: true },
-    },
-    inProgress: {
-      id: { type: String, required: true },
-      cards: [cardSchema],
-      title: { type: String, required: true },
-    },
-    done: {
-      id: { type: String, required: true },
-      cards: [cardSchema],
-      title: { type: String, required: true },
+    sections: {
+      todo: {
+        id: { type: String, required: true },
+        cards: [cardSchema],
+        title: { type: String, required: true },
+      },
+      inProgress: {
+        id: { type: String, required: true },
+        cards: [cardSchema],
+        title: { type: String, required: true },
+      },
+      done: {
+        id: { type: String, required: true },
+        cards: [cardSchema],
+        title: { type: String, required: true },
+      },
     },
   },
   schemaOptions,

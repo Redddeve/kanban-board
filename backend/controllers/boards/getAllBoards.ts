@@ -3,12 +3,16 @@ import { Board } from '../../models/kanban';
 import ctrlWrapper from '../../utils/ctrlWrapper';
 
 const getAllBoards = async (req: Request, res: Response) => {
-  const result = await Board.find();
+  try {
+    const result = await Board.find({}, '-sections');
 
-  if (result.length) {
-    res.json(result);
-  } else {
-    res.json(null);
+    if (result.length) {
+      res.json(result);
+    } else {
+      res.json([]);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err });
   }
 };
 

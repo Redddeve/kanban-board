@@ -1,10 +1,10 @@
 {
   "name": "kanban-board-server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "./dist/server.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node ./server.js",
+    "build": "npm i && tsc && npm start",
+    "start": "cross-env NODE_ENV=production node ./dist/server.js",
     "start:dev": "cross-env NODE_ENV=development nodemon --exec ts-node ./server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
