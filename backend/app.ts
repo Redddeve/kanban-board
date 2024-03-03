@@ -4,6 +4,7 @@ import logger from 'morgan';
 import dotenv from 'dotenv';
 
 import boardsRouter from './routes/api/boards';
+import cardsRouter from './routes/api/cards';
 import { RequestError } from './utils/requestError';
 
 dotenv.config();
@@ -17,6 +18,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/boards', boardsRouter);
+
+app.use('/api/cards', cardsRouter);
 
 app.use((req: Request, res: Response) => {
   const error = new Error('Not Found');
