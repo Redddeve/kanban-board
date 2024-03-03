@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { cardProps, updPosProps } from '../../types/types';
+import { cardProps, updCardProps, updPosProps } from '../../types/types';
 
 export const kanbanInstance = axios.create({
   baseURL: 'http://localhost:8080/api/',
@@ -79,6 +79,22 @@ export const createCard = createAsyncThunk(
   }
 );
 
+export const updateCard = createAsyncThunk(
+  'updateCard',
+  async (body: updCardProps, { rejectWithValue }) => {
+    const { id, title, content } = body;
+    try {
+      const { data } = await kanbanInstance.put(`/cards/${id}`, {
+        title,
+        content,
+      });
+      return data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
 export const deleteCard = createAsyncThunk(
   'deleteCard',
   async (id: string, { rejectWithValue }) => {
@@ -95,10 +111,7 @@ export const updatePosition = createAsyncThunk(
   'updatePosition',
   async (body: updPosProps, { rejectWithValue }) => {
     try {
-      const { data } = await kanbanInstance.put(
-        `/cards/updatePosition  `,
-        body
-      );
+      const { data } = await kanbanInstance.put(`/cards/updatePosition`, body);
       return data;
     } catch (err) {
       return rejectWithValue(err);

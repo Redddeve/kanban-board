@@ -10,11 +10,6 @@ export default function Modal() {
   const modal = document.getElementById('create_modal') as HTMLDialogElement;
   const form = document.getElementById('name-form') as HTMLFormElement;
 
-  function onInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const inputValue = e.currentTarget.value.trim();
-    setBoardName(inputValue);
-  }
-
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const inputValue = (
@@ -31,7 +26,7 @@ export default function Modal() {
       .then(({ _id }) => {
         dispatch(fetchBoardById(_id));
       })
-      .catch((error) => console.error(error));
+      .catch(error => console.error(error));
     e.currentTarget.reset();
     modal.close();
   }
@@ -50,7 +45,7 @@ export default function Modal() {
       .then(({ _id }) => {
         dispatch(fetchBoardById(_id));
       })
-      .catch((error) => console.error(error));
+      .catch(error => console.error(error));
 
     form.reset();
     modal.close();
@@ -71,7 +66,7 @@ export default function Modal() {
             type="text"
             placeholder="Enter it's name"
             className="input input-bordered w-full max-w-xs"
-            onChange={onInputChange}
+            onChange={e => setBoardName(e.target.value.trim())}
             autoFocus
             required
           />

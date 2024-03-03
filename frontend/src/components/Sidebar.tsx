@@ -25,9 +25,7 @@ export default function Sidebar() {
       <div className="p-5 overflow-y-auto">
         <ul className="flex flex-col gap-4 ">
           {boards?.length !== 0 &&
-            boards?.map((board) => (
-              <BoardCard key={board._id} board={board}></BoardCard>
-            ))}
+            boards?.map(board => <BoardCard key={board._id} board={board} />)}
         </ul>
       </div>
     </div>

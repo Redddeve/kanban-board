@@ -25,11 +25,6 @@ export type Board = {
 export interface KanbanState {
   boards: Board[];
   board: null | Board;
-  sections: {
-    todo: Column;
-    inProgress: Column;
-    done: Column;
-  } | null;
   loading: boolean;
   error: null | string;
 }
@@ -38,6 +33,12 @@ export interface cardProps {
   boardId: string;
   sectionId?: string;
   cardId?: string;
+}
+
+export interface updCardProps {
+  id: string;
+  title: string;
+  content: string;
 }
 
 export interface updPosProps {

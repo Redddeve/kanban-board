@@ -32,17 +32,19 @@ export default function BoardCard({ board }: BoardCardProps) {
     dispatch(updateBoardName({ id, name }));
   }
 
-  function onInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const inputValue = e.currentTarget.value.trim();
-    setBoardName(inputValue);
+  function onEditClick(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    setIsEditing(true);
   }
 
-  function deleteById(id: string) {
-    dispatch(deleteBoardById(id));
+  function onDeleteClick(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    dispatch(deleteBoardById(board._id));
   }
-  function onClick(id: string) {
-    if (currentBoard?._id !== id) {
-      dispatch(fetchBoardById(id));
+
+  function onCardClick() {
+    if (currentBoard?._id !== board._id) {
+      dispatch(fetchBoardById(board._id));
     }
   }
 
@@ -56,7 +58,7 @@ export default function BoardCard({ board }: BoardCardProps) {
               updateName(board._id, boardName);
               setIsEditing(false);
             }}
-            onChange={onInputChange}
+            onChange={e => setBoardName(e.currentTarget.value.trim())}
             defaultValue={boardName}
             className="input input-bordered card-title p-0.5 h-7 text-base font-medium "
           />
@@ -67,7 +69,7 @@ export default function BoardCard({ board }: BoardCardProps) {
       ) : (
         <div
           className="card-body p-4 max-h-56 cursor-pointer"
-          onClick={() => onClick(board._id)}
+          onClick={onCardClick}
         >
           <p className="card-title p-0.5 text-base font-medium ">{boardName}</p>
           <p className="my-auto mb-2 text-xs text-neutral-content">
@@ -76,16 +78,18 @@ export default function BoardCard({ board }: BoardCardProps) {
           <div className="card-actions justify-end ">
             <button
               type="button"
-              onClick={() => setIsEditing(true)}
+              onClick={onEditClick}
               className="p-2 bg-slate-200 rounded-xl text-black hover:opacity-70 transition"
+              title="Edit board name"
               aria-label="Edit board name"
             >
               <RxPencil2 />
             </button>
             <button
               type="button"
-              onClick={() => deleteById(board._id)}
+              onClick={onDeleteClick}
               className="p-2 bg-slate-200 rounded-xl text-black hover:opacity-70 transition"
+              title="Delete board"
               aria-label="Delete board"
             >
               <FiTrash2 />

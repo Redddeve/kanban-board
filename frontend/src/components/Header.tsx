@@ -7,11 +7,6 @@ export default function Header() {
 
   const dispatch = useAppDispatch();
 
-  function onInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const inputValue = e.currentTarget.value.trim();
-    setBoardId(inputValue);
-  }
-
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const inputValue = (
@@ -35,7 +30,7 @@ export default function Header() {
           name="board_id"
           placeholder="Enter a board ID here..."
           className="input input-bordered w-full"
-          onChange={onInputChange}
+          onChange={e => setBoardId(e.currentTarget.value.trim())}
         />
         <button
           type="submit"
