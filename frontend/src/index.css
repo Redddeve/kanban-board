@@ -48,3 +48,7 @@ a {
 ::-webkit-scrollbar:horizontal {
   height: 8px;
 }
+
+::-webkit-scrollbar-thumb {
+  @apply bg-rose-900 rounded-xl;
+}

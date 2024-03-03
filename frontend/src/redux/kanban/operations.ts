@@ -1,0 +1,107 @@
+import axios from 'axios';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { cardProps, updPosProps } from '../../types/types';
+
+export const kanbanInstance = axios.create({
+  baseURL: 'http://localhost:8080/api/',
+});
+
+export const fetchBoards = createAsyncThunk(
+  'fetchBoards',
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await kanbanInstance.get(`/boards`);
+      return data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const fetchBoardById = createAsyncThunk(
+  'fetchBoardById',
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const { data } = await kanbanInstance.get(`/boards/${id}`);
+      return data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const createBoard = createAsyncThunk(
+  'createBoard',
+  async (body: { name: string }, { rejectWithValue }) => {
+    try {
+      const { data } = await kanbanInstance.post(`/boards/`, body);
+      return data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const deleteBoardById = createAsyncThunk(
+  'deleteBoard',
+  async (id: string, { rejectWithValue }) => {
+    try {
+      await kanbanInstance.delete(`/boards/${id}`);
+      return id;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const updateBoardName = createAsyncThunk(
+  'updateBoardName',
+  async (body: { id: string; name: string }, { rejectWithValue }) => {
+    const { id, name } = body;
+    try {
+      const { data } = await kanbanInstance.patch(`/boards/${id}`, { name });
+      return data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const createCard = createAsyncThunk(
+  'addCard',
+  async (body: cardProps, { rejectWithValue }) => {
+    try {
+      const { data } = await kanbanInstance.post(`/cards`, body);
+      return data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const deleteCard = createAsyncThunk(
+  'deleteCard',
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const { data } = await kanbanInstance.delete(`/cards/${id}`);
+      return data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const updatePosition = createAsyncThunk(
+  'updatePosition',
+  async (body: updPosProps, { rejectWithValue }) => {
+    try {
+      const { data } = await kanbanInstance.put(
+        `/cards/updatePosition  `,
+        body
+      );
+      return data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
