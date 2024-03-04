@@ -5,6 +5,8 @@ import { Card } from '../types/types';
 import { useState } from 'react';
 import { useAppDispatch } from '../hooks/hooks';
 import { deleteCard, updateCard } from '../redux/kanban/operations';
+import { selectBoard } from '../redux/kanban/selectors';
+import { useSelector } from 'react-redux';
 
 export interface CardProps {
   card: Card;
@@ -18,8 +20,12 @@ export default function TaskCard({ card, index }: CardProps) {
 
   const dispatch = useAppDispatch();
 
+  const board = useSelector(selectBoard);
+
   function removeItemById(id: string) {
-    dispatch(deleteCard(id));
+    if (board) {
+      dispatch(deleteCard(id));
+    }
   }
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {

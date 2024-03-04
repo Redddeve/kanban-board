@@ -7,7 +7,7 @@ export type Card = {
 };
 
 export type Column = {
-  id: string;
+  _id: string;
   cards: Card[];
   title: string;
 };
@@ -15,16 +15,13 @@ export type Column = {
 export type Board = {
   _id: string;
   name: string;
-  sections?: {
-    todo: Column;
-    inProgress: Column;
-    done: Column;
-  };
+  sections?: Column[];
 };
 
 export interface KanbanState {
   boards: Board[];
   board: null | Board;
+  sections: Column[];
   loading: boolean;
   error: null | string;
 }

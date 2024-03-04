@@ -1,6 +1,6 @@
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import KanbanColumn from './Column';
-import { selectBoard } from '../redux/kanban/selectors';
+import { selectBoard, selectSections } from '../redux/kanban/selectors';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../hooks/hooks';
 import { useEffect, useState } from 'react';
@@ -12,13 +12,14 @@ export interface BoardProps {
 }
 
 export default function KanbanBoard({ dashboard }: BoardProps) {
-  const [sections, setSections] = useState<Column[]>([]);
+  const [columns, setColumns] = useState<Column[]>([]);
 
   const { _id, name } = dashboard;
 
   const dispatch = useAppDispatch();
 
   const board = useSelector(selectBoard);
+  const sections = useSelector(selectSections);
 
   useEffect(() => {
     if (board && board._id !== _id) {
@@ -27,34 +28,30 @@ export default function KanbanBoard({ dashboard }: BoardProps) {
   }, [dispatch, _id, board]);
 
   useEffect(() => {
-    if (board && board.sections) {
-      setSections([
-        board.sections.todo,
-        board.sections.inProgress,
-        board.sections.done,
-      ]);
+    if (sections) {
+      setColumns(sections);
     }
-  }, [board]);
+  }, [sections]);
 
   const onDragEnd = async (result: DropResult) => {
     const { destination, source } = result;
 
     if (!destination) return;
 
-    const sourceColIndex = sections.findIndex(
-      (e) => e.id === source.droppableId
+    const sourceColIndex = columns.findIndex(
+      el => el._id === source.droppableId
     );
-    const destColIndex = sections.findIndex(
-      (e) => e.id === destination.droppableId
+    const destColIndex = columns.findIndex(
+      el => el._id === destination.droppableId
     );
 
-    const sourceCol = sections[sourceColIndex];
-    const destCol = sections[destColIndex];
+    const sourceCol = columns[sourceColIndex];
+    const destCol = columns[destColIndex];
 
     const sourceCards = [...sourceCol.cards];
     const destCards = [...destCol.cards];
 
-    const newSections = [...sections];
+    const newSections = [...columns];
 
     if (source.droppableId !== destination.droppableId) {
       const [removed] = sourceCards.splice(source.index, 1);
@@ -69,7 +66,7 @@ export default function KanbanBoard({ dashboard }: BoardProps) {
         cards: destCards,
       };
 
-      setSections(newSections);
+      setColumns(newSections);
     } else {
       const [removed] = destCards.splice(source.index, 1);
       destCards.splice(destination.index, 0, removed);
@@ -79,7 +76,7 @@ export default function KanbanBoard({ dashboard }: BoardProps) {
         cards: destCards,
       };
 
-      setSections(newSections);
+      setColumns(newSections);
     }
 
     try {
@@ -89,24 +86,24 @@ export default function KanbanBoard({ dashboard }: BoardProps) {
           boardId: board._id,
           sourceList: sourceCards,
           destList: destCards,
-          sourceColId: sourceCol.id,
-          destColId: destCol.id,
+          sourceColId: sourceCol._id,
+          destColId: destCol._id,
         })
       );
     } catch (err) {
-      setSections(sections);
+      setColumns(columns);
       console.error(err);
     }
   };
 
   return (
-    <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+    <DragDropContext onDragEnd={result => onDragEnd(result)}>
       <div className="flex flex-grow flex-col gap-4 ">
         <h1 className="text-center text-2xl font-semibold">{name}</h1>
         <div className="flex justify-around gap-4">
-          {sections &&
-            sections?.map((column) => (
-              <KanbanColumn key={column.id} column={column} />
+          {columns &&
+            columns?.map(column => (
+              <KanbanColumn key={column._id} column={column} />
             ))}
         </div>
       </div>

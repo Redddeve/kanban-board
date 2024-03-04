@@ -12,7 +12,7 @@ interface ColumnProps {
 }
 
 export default function Column({ column }: ColumnProps) {
-  const { id, title, cards } = column;
+  const { _id, title, cards } = column;
 
   const dispatch = useAppDispatch();
   const board = useSelector(selectBoard);
@@ -25,13 +25,13 @@ export default function Column({ column }: ColumnProps) {
 
   return (
     <div
-      key={id}
-      className="flex flex-col justify-start min-w-80 w-[350px] h-[550px] text-textColor "
+      key={_id}
+      className="flex flex-col justify-start w-[300px] h-[410px] text-textColor xl:min-w-80 xl:w-[350px] xl:h-[550px] "
     >
       <h2 className="p-4 text-center text-lg font-semibold rounded-t-md border-4 border-solid border-neutral">
         {title}
       </h2>
-      <Droppable key={id} droppableId={id}>
+      <Droppable key={_id} droppableId={_id}>
         {(provided, snapshot) => (
           <div
             className="flex flex-grow flex-col items-center gap-3 p-3 min-h-32 overflow-x-hidden overflow-y-auto bg-neutral transition"
@@ -51,7 +51,7 @@ export default function Column({ column }: ColumnProps) {
       </Droppable>
       <button
         className="flex gap-2 items-center p-4 rounded-b-md bg-neutral border-4 border-solid border-neutral hover:bg-inherit  transition"
-        onClick={() => addCard(column.id)}
+        onClick={() => addCard(column._id)}
       >
         <FiPlus />
         Add task
