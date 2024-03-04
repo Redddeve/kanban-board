@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { cardProps, updCardProps, updPosProps } from '../../types/types';
 
 export const kanbanInstance = axios.create({
-  baseURL: 'http://localhost:8080/api/',
+  baseURL: 'https://kanban-board-server-ks0g.onrender.com/api',
 });
 
 export const fetchBoards = createAsyncThunk(
@@ -34,7 +34,7 @@ export const createBoard = createAsyncThunk(
   'createBoard',
   async (body: { name: string }, { rejectWithValue }) => {
     try {
-      const { data } = await kanbanInstance.post(`/boards/`, body);
+      const { data } = await kanbanInstance.post(`/boards`, body);
       return data;
     } catch (err) {
       return rejectWithValue(err);
