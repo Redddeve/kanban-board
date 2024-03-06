@@ -31,6 +31,11 @@ export default function TaskCard({ card, index }: CardProps) {
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
+    if (card.title === cardTitle && card.content === cardContent) {
+      setIsEditing(false);
+      return;
+    }
+
     dispatch(
       updateCard({ id: card._id, title: cardTitle, content: cardContent })
     );
@@ -50,13 +55,20 @@ export default function TaskCard({ card, index }: CardProps) {
               autoFocus
               onChange={e => setCardTitle(e.target.value.trim())}
               defaultValue={cardTitle}
+              minLength={3}
+              maxLength={30}
               placeholder="Title"
               className="input input-bordered card-title p-0.5 text-base font-medium indent-2 "
             />
             <textarea
-              onChange={e => setCardContent(e.target.value.trim())}
+              onChange={e => {
+                if (e.target.value.trim()) {
+                  setCardContent(e.target.value.trim());
+                }
+              }}
+              minLength={3}
               placeholder="Content"
-              className="textarea textarea-bordered my-auto h-[90%] w-full overflow-auto whitespace-pre-wrap resize-none "
+              className="textarea textarea-bordered my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap resize-none "
               defaultValue={cardContent}
             />
 
@@ -91,10 +103,10 @@ export default function TaskCard({ card, index }: CardProps) {
               {...provided.draggableProps}
             >
               <div className="card-body p-4 max-h-56 ">
-                <p className="card-title p-0.5 text-base font-medium ">
+                <p className="card-title p-1 text-base font-medium overflow-y-hidden overflow-x-hidden whitespace-pre-wrap break-words ">
                   {cardTitle}
                 </p>
-                <p className="my-auto h-[90%] w-full overflow-auto whitespace-pre-wrap ">
+                <p className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap break-words">
                   {cardContent}
                 </p>
 
