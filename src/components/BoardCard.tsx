@@ -48,20 +48,35 @@ export default function BoardCard({ board }: BoardCardProps) {
     }
   }
 
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (board.name !== boardName) {
+      updateName(board._id, boardName);
+    }
+    setIsEditing(false);
+  }
+  console.log(board.name);
   return (
     <div className="card w-full max-w-80 min-h-28 bg-neutral shadow-xl">
       {isEditing ? (
         <div className="card-body p-4 max-h-56 h-[130px]">
-          <input
-            autoFocus
-            onBlur={() => {
-              updateName(board._id, boardName);
-              setIsEditing(false);
-            }}
-            onChange={e => setBoardName(e.currentTarget.value.trim())}
-            defaultValue={boardName}
-            className="input input-bordered card-title p-0.5 h-7 text-base font-medium "
-          />
+          <form onSubmit={onSubmit}>
+            <input
+              autoFocus
+              onBlur={() => {
+                if (board.name !== boardName) {
+                  updateName(board._id, boardName);
+                }
+                setIsEditing(false);
+              }}
+              onChange={e => setBoardName(e.currentTarget.value.trim())}
+              defaultValue={boardName}
+              minLength={3}
+              maxLength={25}
+              className="input input-bordered card-title p-0.5 h-7 text-base font-medium "
+            />
+          </form>
           <p className="my-auto mb-2 text-xs text-neutral-content">
             ID: {board._id}
           </p>
@@ -71,7 +86,9 @@ export default function BoardCard({ board }: BoardCardProps) {
           className="card-body p-4 max-h-56 cursor-pointer"
           onClick={onCardClick}
         >
-          <p className="card-title p-0.5 text-base font-medium ">{boardName}</p>
+          <p className="card-title p-0.5 text-base w-full font-medium overflow-hidden whitespace-pre-wrap break-words">
+            {boardName}
+          </p>
           <p className="my-auto mb-2 text-xs text-neutral-content">
             ID: {board._id}
           </p>

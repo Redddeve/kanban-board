@@ -7,6 +7,7 @@ import {
   deleteCard,
   fetchBoardById,
   fetchBoards,
+  updateBoardName,
   updateCard,
   updatePosition,
 } from './operations';
@@ -30,6 +31,13 @@ export const slice = createSlice({
       })
       .addCase(createBoard.fulfilled, (state, { payload }) => {
         state.boards.push(payload);
+      })
+      .addCase(updateBoardName.fulfilled, (state, { payload }) => {
+        const index = state.boards.findIndex(({ _id }) => _id === payload._id);
+        state.boards[index] = payload;
+        if (state.board && state.board._id === payload._id) {
+          state.board.name = payload.name;
+        }
       })
       .addCase(deleteBoardById.fulfilled, (state, { payload }) => {
         state.boards = state.boards.filter(({ _id }) => _id !== payload);

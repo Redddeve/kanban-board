@@ -31,14 +31,12 @@ export default function TaskCard({ card, index }: CardProps) {
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (card.title === cardTitle && card.content === cardContent) {
-      setIsEditing(false);
-      return;
+    if (card.title !== cardTitle && card.content !== cardContent) {
+      dispatch(
+        updateCard({ id: card._id, title: cardTitle, content: cardContent })
+      );
     }
 
-    dispatch(
-      updateCard({ id: card._id, title: cardTitle, content: cardContent })
-    );
     setIsEditing(false);
   }
 
@@ -103,7 +101,7 @@ export default function TaskCard({ card, index }: CardProps) {
               {...provided.draggableProps}
             >
               <div className="card-body p-4 max-h-56 ">
-                <p className="card-title p-1 text-base font-medium overflow-y-hidden overflow-x-hidden whitespace-pre-wrap break-words ">
+                <p className="card-title p-1 text-base font-medium overflow-hidden whitespace-pre-wrap break-words ">
                   {cardTitle}
                 </p>
                 <p className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap break-words">

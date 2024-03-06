@@ -67,6 +67,8 @@ export default function Modal() {
             placeholder="Enter it's name"
             className="input input-bordered w-full max-w-xs"
             onChange={e => setBoardName(e.target.value.trim())}
+            minLength={3}
+            maxLength={25}
             autoFocus
             required
           />
